@@ -1,10 +1,3 @@
-!pip install nltk gensim scikit-learn aiogram
-!pip install spacy
-!python -m spacy download ru_core_news_sm
-
-import nltk
-nltk.download("stopwords")
-
 import spacy
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
