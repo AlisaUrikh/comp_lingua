@@ -68,16 +68,13 @@ faq_vectors = np.array([sentence_vector(query, word2vec_model) for query in faq_
 def get_word2vec_answer(question):
     # Лемматизируем запрос
     lemmatized_question = lemmatize_text(question)
-    
     # Генерируем вектор запроса, усреднив векторы всех слов
-    query_vector = sentence_vector(lemmatized_question, word2vec_model).reshape(1, -1)
-    
+    query_vector = sentence_vector(lemmatized_question, word2vec_model).reshape(1, -1) 
     # Оценка косинусного сходства с каждым вопросом из FAQ
     similarities = cosine_similarity(query_vector, faq_vectors)
     best_match_idx = similarities.argmax()
     
     return faq_answers[best_match_idx]
-
 
 # Обработка команды /start
 @dp.message(Command("start"))
@@ -100,16 +97,16 @@ async def complain(message: types.Message):
 
 # Обработка изображений
 @dp.message(lambda message: message.content_type == "photo")
-async def handle_photo(message: types.Message):
+async def get_photo(message: types.Message):
     file_id = message.photo[-1].file_id
     file = await bot.get_file(file_id)
     filename = file.file_path.split("/")[-1]
     filesize = message.photo[0].file_size
-    await message.answer(f'Ваш запрос передан специалисту. Название файла: {filename}, размер: {filesize} байт')
+    await message.answer(f'Название файла: {filename}, размер: {filesize} байт. Ваш запрос отправлен специалисту. Вернемся к Вам с ответом в ближайшее время!')
 
 # Обработка вопросов пользователей
 @dp.message()
-async def answer_question(message: types.Message):
+async def answers(message: types.Message):
     question = message.text
     # Ответ на основе TF-IDF
     tfidf_answer = get_tfidf_answer(question)
